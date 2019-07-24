@@ -1,8 +1,8 @@
 package com.example.movie.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.VolumeShaper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.movie.DetailActivity;
 import com.example.movie.R;
 import com.example.movie.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         TextView tvTitle;
         TextView tvOverview;
         ImageView ivPoster;
-        ConstraintLayout constraintLayout;
+        ConstraintLayout container;
 
 
         public ViewHolder( View itemView) {
@@ -71,10 +74,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
           tvTitle=  itemView.findViewById(R.id.tvTitle);
           tvOverview = itemView.findViewById(R.id.tvOverview);
           ivPoster = itemView.findViewById(R.id.ivposter);
-          constraintLayout=itemView.findViewById(R.id.constraintLayout);
+          container=itemView.findViewById(R.id.container);
         }
 
-        public void bind(Movie movie) {
+        public void bind(final Movie movie) {
           tvTitle.setText(movie.getTitle());
           tvOverview.setText(movie.getOverview());
           //reference the backdrop path if phone is in landscape
@@ -84,6 +87,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                   imageUrl =movie.getBackdropPath();
             }
             Glide.with(context).load(imageUrl).into(ivPoster);
+
+            tvTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Navigate to detail activity on tap
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("movie", Parcels.wrap(movie));
+                    context.startActivity(intent);
+                }
+            });
 
             //add click listener on the whole row
 

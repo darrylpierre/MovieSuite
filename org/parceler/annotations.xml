@@ -1,0 +1,5 @@
+<root>
+    <item name='org.parceler.Parcel'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>
